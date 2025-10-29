@@ -3,7 +3,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSortBy } from './filterSlice';
+import { setSortBy } from './FilterSlice';
 import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export default function BasicMenu() {
