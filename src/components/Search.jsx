@@ -4,7 +4,7 @@ import InputBase from '@mui/material/InputBase';
 import Paper from '@mui/material/Paper';
 import { useCallback, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSearch } from './FilterSlice';
+import { setSearch } from './filterSlice';
 
 export default function Search() {
 

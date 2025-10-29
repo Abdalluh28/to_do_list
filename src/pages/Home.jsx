@@ -11,16 +11,9 @@ export default function Home() {
     return (
         <div>
             <NavBar />
-            <div className="flex justify-between lg:flex-row flex-col w-full px-4 gap-2">
-
-                <div className="flex justify-center">
-                    <Search />
-                </div>
-
-                <div className="flex justify-center gap-4">
-                    <PriorityFilter />
-                    <SelectFilter />
-                </div>
+            <div className="flex flex-col sm:flex-row items-center sm:justify-end justify-center mt-4px-4 gap-2">
+                <PriorityFilter />
+                <SelectFilter />
             </div>
 
             <Tasks />

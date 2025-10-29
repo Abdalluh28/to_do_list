@@ -3,7 +3,8 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { setSortBy } from './FilterSlice';
+import { setSortBy } from './filterSlice';
+import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export default function BasicMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
@@ -28,15 +29,17 @@ export default function BasicMenu() {
 
     return (
         <div>
-            <Button
-                id="basic-button"
+            <button className='border border-blue-500 text-black hover:bg-blue-700 hover:text-white font-semibold tracking-widest py-2 px-4 rounded-lg cursor-pointer transition-all duration-300 mr-2'
+                id='basic-button'
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-                {value}
-            </Button>
+                <span>{value}</span>
+                <ArrowDownwardIcon />
+            </button>
+
             <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}

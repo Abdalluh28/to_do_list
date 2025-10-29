@@ -103,8 +103,8 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
             </div>
 
             {/* Start & End Dates */}
-            <div className="flex gap-4">
-                <div className="w-1/2">
+            <div className="flex gap-4 flex-col md:flex-row">
+                <div className="md:w-1/2 w-full">
                     <DatePickerField
                         name="startDate"
                         control={control}
@@ -112,7 +112,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
                         label="Start Date"
                     />
                 </div>
-                <div className="w-1/2">
+                <div className="md:w-1/2 w-full">
                     <DatePickerField
                         name="endDate"
                         control={control}

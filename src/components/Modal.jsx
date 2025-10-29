@@ -44,7 +44,7 @@ export function Window({ children, name }) {
         <div
             className='fixed top-0 left-0 w-full h-full backdrop-blur-xs flex justify-center items-center z-50 '
             onClick={handleOverlayClick}>
-            <div className='felx flex-col relative'>
+            <div className='felx flex-col relative sm:w-auto w-full'>
                 <button onClick={close} className='cursor-pointer absolute top-2 right-2 bg-red-400 p-2 rounded-full hover:bg-red-500 transition-all duration-300'>
                     <CloseOutlinedIcon />
                 </button>

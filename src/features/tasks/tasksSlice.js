@@ -1,36 +1,42 @@
-import { createSlice } from "@reduxjs/toolkit";
-// import { tasks } from "../../data/tasks";
+import { createSlice } from '@reduxjs/toolkit';
 
+const sortByDeadline = (tasks) =>
+    [...tasks].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
+
+// Keep status grouping stable: todo, in-progress, done
+const sortAllTasks = (tasks) => {
+    const todo = sortByDeadline(tasks.filter(t => t.status === 'todo'));
+    const inProgress = sortByDeadline(tasks.filter(t => t.status === 'in-progress'));
+    const done = sortByDeadline(tasks.filter(t => t.status === 'done'));
+    return [...todo, ...inProgress, ...done];
+};
 const savedTasks = JSON.parse(localStorage.getItem('tasks'))
 const initialState = savedTasks || []
-//const initialState = []; 
-
 
 const tasksSlice = createSlice({
     name: 'tasks',
     initialState,
     reducers: {
-        addTask: (state, action) => {
-            state.push(action.payload)
+        // Replace the whole list (will be sorted)
+        setTasks: (state, action) => {
+            return sortAllTasks(action.payload || []);
         },
-        deleteTask: (state, action) => {
-            return state.filter((task) => task.id !== action.payload)
+        addTask: (state, action) => {
+            // state is proxied by immer; returning value replaces it which is fine
+            const newState = [...state, action.payload];
+            return sortAllTasks(newState);
         },
         updateTask: (state, action) => {
-            const index = state.findIndex((task) => task.id === action.payload.id)
-            if (index === -1) return
-            state[index] = { ...state[index], ...action.payload }; // merge to preserve other fields
+            const updated = state.map(t => (t.id === action.payload.id ? action.payload : t));
+            return sortAllTasks(updated);
         },
-        setTasks: (state, action) => [...action.payload],
-        resetTasks: () => [...initialState]
+        deleteTask: (state, action) => {
+            return state.filter(t => t.id !== action.payload);
+        },
+        // optional: reset
+        clearTasks: () => []
     }
-})
+});
 
-export const { addTask, deleteTask, updateTask, setTasks, resetTasks } = tasksSlice.actions
-export default tasksSlice.reducer
-
-
-export const getTodoList = (state) => state.tasks.filter((task) => task.status === 'todo')
-export const getInProgressList = (state) => state.tasks.filter((task) => task.status === 'in-progress')
-export const getDoneList = (state) => state.tasks.filter((task) => task.status === 'done')
-export const getAllTasks = (state) => state.tasks
+export const { setTasks, addTask, updateTask, deleteTask, clearTasks } = tasksSlice.actions;
+export default tasksSlice.reducer;

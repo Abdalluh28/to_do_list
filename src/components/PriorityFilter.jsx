@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { setPriority } from './FilterSlice';
+import { setPriority } from './filterSlice';
 
 export default function PriorityFilter() {
     return (

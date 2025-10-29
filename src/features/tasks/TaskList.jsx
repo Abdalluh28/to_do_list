@@ -5,7 +5,7 @@ import TaskItem from './TaskItem'
 export default function TaskList({ list, tasks }) {
 
     return (
-        <div className='flex flex-col gap-4 m-3 lg:w-1/3 xl:w-1/4 sm:w-1/2 w-[90%]'>
+        <div className='flex flex-col gap-4 m-3 lg:w-1/3 md:w-2/3 sm:w-3/4 w-[90%]'>
             <div
                 className={`flex gap-3 items-center pl-5 rounded-md py-2 mt-4 
                     ${list === 'todo' ? 'bg-blue-400' : list === 'in-progress' ? 'bg-orange-400' : 'bg-green-400'}`}

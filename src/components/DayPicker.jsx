@@ -36,7 +36,7 @@ export default function DayPicker({ date, setDate, startDate, endDate }) {
                 type="text"
                 value={date.format('DD MMM YYYY')}
                 readOnly
-                className="border rounded p-1 w-32"
+                className="border rounded p-1 w-2/3"
             />
             <IconButton onClick={handleOpen}>
                 <CalendarTodayIcon />

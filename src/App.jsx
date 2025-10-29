@@ -22,6 +22,10 @@ export default function App() {
                 closeOnClick
                 pauseOnHover
                 draggable
+                style={{
+                    width: '300px',
+                    height: '70px'
+                }}
             />
         </>
     )

@@ -4,9 +4,6 @@ import TaskList from './TaskList';
 import { setTasks } from './tasksSlice';
 import { useMemo } from 'react';
 
-// Helper to sort tasks by deadline
-const sortByDeadline = (tasks) =>
-    [...tasks].sort((a, b) => new Date(a.startDate) - new Date(b.startDate));
 
 export default function Tasks() {
     const tasks = useSelector((state) => state.tasks); // source of truth
@@ -82,18 +79,13 @@ export default function Tasks() {
                 ? [...remainingTasks, ...newDestTasks]
                 : [...remainingTasks, ...newSourceTasks, ...newDestTasks];
 
-        const sorted = [
-            ...sortByDeadline(updatedTasks.filter((t) => t.status === 'todo')),
-            ...sortByDeadline(updatedTasks.filter((t) => t.status === 'in-progress')),
-            ...sortByDeadline(updatedTasks.filter((t) => t.status === 'done')),
-        ];
 
-        dispatch(setTasks(sorted));
+        dispatch(setTasks(updatedTasks));
     };
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="flex items-center lg:items-start justify-center gap-8 flex-col lg:flex-row pl-5">
+            <div className="flex sm:items-center lg:items-start justify-center gap-8 flex-col lg:flex-row pl-5">
                 {['todo', 'in-progress', 'done'].map((status) => (
                     <TaskList
                         key={status}
