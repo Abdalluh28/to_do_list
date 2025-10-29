@@ -11,7 +11,8 @@ export default function Home() {
     return (
         <div>
             <NavBar />
-            <div className="flex flex-col sm:flex-row items-center sm:justify-end justify-center mt-4px-4 gap-2">
+            <div className="flex flex-col sm:flex-row items-center sm:justify-end justify-center gap-4">
+                <div className='sm:hidden block'><Search /></div>
                 <PriorityFilter />
                 <SelectFilter />
             </div>

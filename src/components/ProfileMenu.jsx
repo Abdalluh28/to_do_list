@@ -3,41 +3,33 @@ import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
-import Modal from '../../../components/Modal';
-import { useCreateTask } from '../useCreateTask';
-import CreateEditTaskForm from './CreateEditTaskForm';
-import DeleteModal from './DeleteModal';
+import Modal from './Modal'
+import ProfileEdit from './ProfileEdit';
 
 
 
 const ITEM_HEIGHT = 48;
 
-export default function TaskMenuButton({ task }) {
+export default function ProfileMenu({ user, handleLogout }) {
     const [anchorEl, setAnchorEl] = useState(null);
     const open = Boolean(anchorEl);
     const handleClick = (event) => setAnchorEl(event.currentTarget);
     const handleClose = () => setAnchorEl(null);
 
-    const { addTaskHandler } = useCreateTask();
 
-    const handleDuplicate = () => {
-        task = { ...task, id: Date.now() };
-        addTaskHandler(task);
-        handleClose();
-    }
 
     return (
         <Modal>
-            <IconButton
-                aria-label="more"
+            <div aria-label="more"
                 id="long-button"
                 aria-controls={open ? 'long-menu' : undefined}
                 aria-expanded={open ? 'true' : undefined}
                 aria-haspopup="true"
-                onClick={handleClick}
-            >
-                <MoreVertIcon />
-            </IconButton>
+                onClick={handleClick}>
+                <button className='border border-red-500 text-black hover:text-white text-lg tracking-widest px-4 py-2 rounded-md hover:bg-red-600 transition-all duration-300 cursor-pointer'>
+                    {user.user_metadata.name.split(' ')[0]}
+                </button>
+            </div>
 
             <Menu
                 id="long-menu"
@@ -50,30 +42,26 @@ export default function TaskMenuButton({ task }) {
                 }}
             >
                 <MenuItem key={'Edit'} onClick={handleClose}>
-                    <Modal.Open opens="edit-task-form">
-                        <span className="w-full text-left">Edit</span>
+                    <Modal.Open opens="edit-profile-modal">
+                        <span className="w-full text-left">Edit Profile</span>
                     </Modal.Open>
                 </MenuItem>
 
-                <MenuItem key={'Duplicate'} onClick={handleDuplicate}>
-                    Duplicate
-                </MenuItem>
 
-                <MenuItem key={'Delete'} onClick={handleClose}>
-                    <Modal.Open opens="delete-task">
-                        <span className="w-full text-left">Delete</span>
-                    </Modal.Open>
+                <MenuItem key={'Delete'} onClick={() => {
+                    handleLogout();
+                    handleClose();
+                }}>
+                    logout
                 </MenuItem>
             </Menu>
 
             {/* Render modal window at the root */}
-            <Modal.Window name="edit-task-form">
-                <CreateEditTaskForm taskToEdit={task} />
+            <Modal.Window name="edit-profile-modal">
+                <ProfileEdit onClose={handleClose} />
             </Modal.Window>
 
-            <Modal.Window name="delete-task">
-                <DeleteModal taskId={task.id} />
-            </Modal.Window>
+
         </Modal>
     );
 }

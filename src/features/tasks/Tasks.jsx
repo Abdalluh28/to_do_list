@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import TaskList from './TaskList';
 import { setTasks } from './tasksSlice';
 import { useMemo } from 'react';
+import { editTask } from '../../services/apiTasks';
 
 
 export default function Tasks() {
@@ -55,7 +56,7 @@ export default function Tasks() {
 
 
     // Handle drag end event (update Redux tasks permanently)
-    const handleDragEnd = (result) => {
+    const handleDragEnd = async (result) => {
         const { source, destination } = result;
         if (!destination) return;
 
@@ -80,7 +81,9 @@ export default function Tasks() {
                 : [...remainingTasks, ...newSourceTasks, ...newDestTasks];
 
 
+
         dispatch(setTasks(updatedTasks));
+        await editTask(movedTask);
     };
 
     return (

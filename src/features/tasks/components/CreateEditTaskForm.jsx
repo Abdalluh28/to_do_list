@@ -1,13 +1,12 @@
 import Box from '@mui/material/Box';
-import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
 import { Controller, useForm } from 'react-hook-form';
-import { useDispatch } from 'react-redux';
-import { addTask, updateTask } from '../tasksSlice';
+import { useCreateTask } from '../useCreateTask';
+import { useEditTask } from '../useEditTask';
 import DatePickerField from './DatePickerFiled';
 import SelectButton from './SelectButton';
-import { toast } from 'react-toastify';
+
 
 export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) {
     const isEdit = Boolean(taskToEdit?.id);
@@ -23,7 +22,8 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
     const { register, handleSubmit, control, formState: { errors }, reset, watch } = useForm({
         defaultValues
     });
-    const dispacth = useDispatch();
+    const { addTaskHandler } = useCreateTask();
+    const { editTaskHandler } = useEditTask();
 
     const startDate = watch('startDate');
     const endDate = watch('endDate');
@@ -40,11 +40,10 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
         };
 
         if (isEdit) {
-            dispacth(updateTask(task));
-            toast.success('Task updated successfully');
+            editTaskHandler(task);
+
         } else {
-            dispacth(addTask(task));
-            toast.success('Task added successfully');
+            addTaskHandler(task);
         }
 
         reset(defaultValues);
@@ -124,8 +123,10 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
 
             {/* Buttons */}
             <div className="flex gap-4 justify-end mt-3">
-                <Button variant="contained" color="error" onClick={onClose}>Cancel</Button>
-                <Button variant="contained" type="submit">{isEdit ? 'Update' : 'Add'}</Button>
+                <button onClick={onClose} className="bg-gray-500 hover:bg-gray-600 transition-all duration-300 p-2 rounded-full w-[100px] cursor-pointer text-white text-lg">Cancel</button>
+                <button type="submit" className="bg-red-500 hover:bg-red-600 transition-all duration-300 p-2 rounded-full w-[100px] cursor-pointer text-white text-lg">
+                    {isEdit ? 'Update' : 'Add'}
+                </button>
             </div>
         </form>
     );

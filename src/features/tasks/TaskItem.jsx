@@ -2,11 +2,10 @@ import { Draggable } from '@hello-pangea/dnd';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
 import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
 import Checkbox from '@mui/material/Checkbox';
-import { useDispatch } from 'react-redux';
 import TooltipButton from '../../components/TooltipButton';
 import { calcDate } from '../../utlis/helpers';
-import TaskMenuButton from './components/TaskMenuButton'
-import { updateTask } from './tasksSlice';
+import TaskMenuButton from './components/TaskMenuButton';
+import { useEditTask } from './useEditTask';
 
 const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
@@ -14,14 +13,15 @@ export default function TaskItem({ task, index }) {
     const startDate = calcDate(task.startDate);
     const endDate = calcDate(task.endDate);
 
-    const dispatch = useDispatch();
+    const { editTaskHandler } = useEditTask()
 
     const handleDone = () => {
         const updatedTask = {
             ...task,
             status: task.status === 'done' ? 'todo' : 'done'
         };
-        dispatch(updateTask(updatedTask));
+
+        editTaskHandler(updatedTask);
     };
 
     return (
