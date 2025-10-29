@@ -12,16 +12,11 @@ const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 export default function TaskItem({ task, index }) {
     const startDate = calcDate(task.startDate);
     const endDate = calcDate(task.endDate);
+    const { editTaskHandler } = useEditTask();
 
-    const { editTaskHandler } = useEditTask()
-
-    const handleDone = () => {
-        const updatedTask = {
-            ...task,
-            status: task.status === 'done' ? 'todo' : 'done'
-        };
-
-        editTaskHandler(updatedTask);
+    const handleDone = async () => {
+        const updatedTask = { ...task, status: task.status === 'done' ? 'todo' : 'done' };
+        await editTaskHandler(updatedTask);
     };
 
     return (
@@ -31,8 +26,7 @@ export default function TaskItem({ task, index }) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`flex flex-col gap-4 rounded-2xl shadow shadow-gray-300 p-3 cursor-grab transition-all duration-200 ${snapshot.isDragging ? 'bg-blue-100 shadow-lg scale-[1.02]' : 'bg-white'
-                        }`}
+                    className={`flex flex-col gap-4 rounded-2xl shadow shadow-gray-300 p-3 cursor-grab transition-all duration-200 ${snapshot.isDragging ? 'bg-blue-100 shadow-lg scale-[1.02]' : 'bg-white'}`}
                 >
                     <div className="flex justify-between items-center">
                         <div className="flex gap-2 items-center">
@@ -43,26 +37,18 @@ export default function TaskItem({ task, index }) {
                             ) : (
                                 <div className="w-4 h-4 border-2 rounded-full mt-1 border-green-400 bg-green-400"></div>
                             )}
-                            <div>
-                                <p className={`text-xl font-semibold ${task.status === 'done' ? 'line-through' : ''}`}>{task.title}</p>
-                            </div>
+                            <p className={`text-xl font-semibold ${task.status === 'done' ? 'line-through' : ''}`}>{task.title}</p>
                         </div>
                         <div className="flex items-center">
-                            <TooltipButton onClick={handleDone}
-                                title={task.status === 'done' ? 'Mark as todo' : 'Mark as done'}>
-                                <Checkbox
-                                    {...label}
-                                    checked={task.status === 'done'}
-                                />
+                            <TooltipButton onClick={handleDone} title={task.status === 'done' ? 'Mark as todo' : 'Mark as done'}>
+                                <Checkbox {...label} checked={task.status === 'done'} />
                             </TooltipButton>
                             <TaskMenuButton task={task} />
                         </div>
                     </div>
 
                     <div className="flex gap-2 items-center text-gray-600">
-                        <span>{startDate}</span>
-                        <span>-</span>
-                        <span>{endDate}</span>
+                        <span>{startDate}</span> - <span>{endDate}</span>
                         <QueryBuilderOutlinedIcon sx={{ color: 'gray' }} />
                     </div>
 
@@ -76,3 +62,4 @@ export default function TaskItem({ task, index }) {
         </Draggable>
     );
 }
+

@@ -9,23 +9,24 @@ export const useEditTask = () => {
     const tasks = useSelector(state => state.tasks);
 
     const editTaskHandler = async (task) => {
-        // get current task to add it back if any error
-        const prevTask = tasks.find(t => t.id === task.id);
+        const prevTaskState = tasks.find(t => t.id === task.id);
+        dispatch(updateTask(task));
+        toast.success("Task edited successfully");
 
-        // update task in redux
-        dispatch(updateTask(task))
-        toast.success('Task edited successfully')
-
-        // update task to supabase
         if (user) {
-            task = { ...task, userId: user.id, uniqueId: `${Date.now()}-${Math.random()}` }
-            const res = await editTask(task)
-            if (res.error) {
-                toast.error("Error editing task to database");
-                dispatch(updateTask(prevTask));
+            try {
+                const res = await editTask(task);
+                if (res.error) {
+                    throw new Error(res.error);
+                }
+            } catch (err) {
+                console.log(err)
+                toast.error("Error editing task in database");
+                dispatch(updateTask(prevTaskState));
             }
         }
-    }
+    };
+
 
     return { editTaskHandler }
 }

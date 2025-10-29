@@ -5,24 +5,30 @@ import { toast } from "react-toastify";
 
 export const useCreateTask = () => {
     const dispatch = useDispatch();
-    const user = JSON.parse(localStorage.getItem("user")) || null;
 
     const addTaskHandler = async (task) => {
-        // add task to redux
-        dispatch(addTaskRedux(task))
-        toast.success('Task added successfully')
+        const user = JSON.parse(localStorage.getItem("user")) || null;
+        const newTask = {
+            ...task,
+            userId: user?.id || null,
+            uniqueId: task.uniqueId || `${Date.now()}-${Math.random()}`
+        };
 
-        // add task to supabase
+        dispatch(addTaskRedux(newTask));
+        toast.success("Task added successfully");
+
         if (user) {
-            task = { ...task, userId: user.id, uniqueId: `${Date.now()}-${Math.random()}` }
-            const res = await addTaskApi(task);
-
-            if (res.error) {
+            try {
+                const res = await addTaskApi(newTask);
+                if (res.error) throw new Error(res.error);
+            } catch (err) {
+                console.log(err)
                 toast.error("Error adding task to database");
                 dispatch(deleteTask(task.id));
             }
         }
-    }
+    };
+
 
     return { addTaskHandler }
 }

@@ -9,22 +9,22 @@ export const useDeleteTask = () => {
     const tasks = useSelector(state => state.tasks);
 
     const deleteTaskHandler = async (taskId) => {
-        // get current task to add it back if any error
         const taskToRestore = tasks.find(task => task.id === taskId);
+        dispatch(deleteTaskRedux(taskId));
+        toast.success("Task deleted successfully");
 
-        // delete task in redux
-        dispatch(deleteTaskRedux(taskId))
-        toast.success('Task deleted successfully')
-
-        // delete task from supabase
-        if (user) {
-            const res = await deleteTaskApi(taskToRestore.uniqueId);
-            if (res.error && taskToRestore) {
+        if (user && taskToRestore) {
+            try {
+                const res = await deleteTaskApi(taskToRestore.uniqueId);
+                if (res.error) throw new Error(res.error);
+            } catch (err) {
+                console.log(err)
                 toast.error("Error deleting task from database");
                 dispatch(addTaskRedux(taskToRestore));
             }
         }
-    }
+    };
+
 
     return { deleteTaskHandler }
 }
