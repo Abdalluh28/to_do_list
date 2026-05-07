@@ -24,7 +24,15 @@ export default function Modal({ children }) {
 
 export function Open({ children, opens }) {
     const { open } = useContext(ModalContext);
-    return cloneElement(children, { onClick: () => open(opens) });
+
+    const handleClick = (e) => {
+        children.props.onClick?.(e);
+        open(opens);
+    };
+
+    return cloneElement(children, {
+        onClick: handleClick,
+    });
 }
 
 export function Window({ children, name }) {

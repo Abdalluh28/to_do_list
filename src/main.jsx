@@ -7,7 +7,7 @@ import store from './store/store.js'
 
 createRoot(document.getElementById('root')).render(
     <Provider store={store}>
-        <main className='bg-[#F5F8FF] min-h-screen'>
+        <main className='min-h-screen bg-background'>
             <App />
         </main>
     </Provider>
