@@ -4,24 +4,24 @@ import TaskItem from './TaskItem'
 
 export default function TaskList({ list, tasks }) {
 
+    const title = list === 'todo' ? 'To Do' : list === 'in-progress' ? 'In Progress' : 'Done';
+
     return (
-        <div className='flex flex-col gap-4 m-3 lg:w-1/3 md:w-2/3 sm:w-3/4 w-[90%]'>
-            <div
-                className={`flex gap-3 items-center pl-5 rounded-md py-2 mt-4 
-                    ${list === 'todo' ? 'bg-blue-400' : list === 'in-progress' ? 'bg-orange-400' : 'bg-green-400'}`}
-            >
-                <p
-                    className={`w-4 h-4 border-2 rounded-full mt-1 
-                        ${list === 'todo' ? 'border-blue-600' : list === 'in-progress' ? 'border-orange-600' : 'border-green-600'}
-                        ${list === 'todo' ? 'bg-blue-600' : list === 'in-progress' ? 'bg-orange-600' : 'bg-green-600'}`}
-                ></p>
-                <p className='text-2xl font-bold'>
-                    {list === 'todo'
-                        ? 'Todo'
-                        : list === 'in-progress'
-                            ? 'In Progress'
-                            : 'Done'}
-                </p>
+        <div className='rounded-2xl p-4 transition-all duration-300'>
+            <div className='flex items-center justify-between mb-4'>
+                <div className='flex items-center gap-2'>
+                    <div className={` w-2 h-2 rounded-full
+                        ${list === 'todo' ? 'bg-yellow-500' :
+                            list === 'in-progress' ? 'bg-purple-500' :
+                                'bg-green-500'
+                        }`}></div>
+                    <h3 className='font-semibold text-foreground'>{title}</h3>
+                    <span className='text-sm text-muted-foreground'>
+                        (
+                        {tasks.length}
+                        )
+                    </span>
+                </div>
             </div>
 
             <Droppable droppableId={list}>
@@ -29,7 +29,7 @@ export default function TaskList({ list, tasks }) {
                     <div
                         {...provided.droppableProps}
                         ref={provided.innerRef}
-                        className='flex flex-col gap-4 min-h-[100px]'
+                        className='space-y-3'
                     >
                         {tasks.length > 0 ?
                             tasks.map((task, index) => (

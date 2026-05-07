@@ -1,14 +1,13 @@
-import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { ArrowUpDown } from 'lucide-react';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { setSortBy } from './FilterSlice';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
 
 export default function BasicMenu() {
     const [anchorEl, setAnchorEl] = useState(null);
-    const [value, setValue] = useState('Sort By');
+    const [value, setValue] = useState('Newest');
     const dispatch = useDispatch();
 
     const open = Boolean(anchorEl);
@@ -29,15 +28,15 @@ export default function BasicMenu() {
 
     return (
         <div>
-            <button className='border border-blue-500 text-black hover:bg-blue-700 hover:text-white font-semibold tracking-widest py-2 px-4 rounded-lg cursor-pointer transition-all duration-300 mr-2'
+            <button className="inline-flex items-center justify-center gap-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed border-2 border-border hover:bg-accent hover:text-accent-foreground h-10 px-4"
                 id='basic-button'
                 aria-controls={open ? 'basic-menu' : undefined}
                 aria-haspopup="true"
                 aria-expanded={open ? 'true' : undefined}
                 onClick={handleClick}
             >
-                <span>{value}</span>
-                <ArrowDownwardIcon />
+                <ArrowUpDown className='w-4 h-4' />
+                <span>Sort: {value}</span>
             </button>
 
             <Menu
@@ -45,17 +44,43 @@ export default function BasicMenu() {
                 anchorEl={anchorEl}
                 open={open}
                 onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
                 slotProps={{
-                    list: {
-                        'aria-labelledby': 'basic-button',
-                    },
+                    paper: {
+                        elevation: 0,
+                        sx: {
+                            overflow: 'visible',
+                            background: 'transparent',
+                            boxShadow: 'none',
+                        }
+                    }
                 }}
             >
-                <MenuItem onClick={() => handleChoose('Newest')}>Newest to oldest</MenuItem>
-                <MenuItem onClick={() => handleChoose('Oldest')}>Oldest to newest</MenuItem>
-                <MenuItem onClick={() => handleChoose('A-Z')}>A-Z ascending order</MenuItem>
-                <MenuItem onClick={() => handleChoose('Z-A')}>Z-A descending order</MenuItem>
-                <MenuItem onClick={() => handleChoose('Sort By')}>Clear</MenuItem>
+                <div className="min-w-[200px] bg-popover border border-border rounded-xl shadow-lg p-1.5 z-50">
+                    <div className='flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-colors duration-150 text-foreground hover:bg-accent'
+                        onClick={() => handleChoose("Newest")}>
+                        Newest
+                    </div>
+                    <div className='flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-colors duration-150 text-foreground hover:bg-accent'
+                        onClick={() => handleChoose("Oldest")}>
+                        Oldest
+                    </div>
+                    <div className='flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-colors duration-150 text-foreground hover:bg-accent'
+                        onClick={() => handleChoose("A-Z")}>
+                        A-Z
+                    </div>
+                    <div className='flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-colors duration-150 text-foreground hover:bg-accent'
+                        onClick={() => handleChoose("Z-A")}>
+                        Z-A
+                    </div>
+                </div>
             </Menu>
         </div>
     );

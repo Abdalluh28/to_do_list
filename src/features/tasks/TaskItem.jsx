@@ -1,23 +1,14 @@
 import { Draggable } from '@hello-pangea/dnd';
 import ErrorOutlinedIcon from '@mui/icons-material/ErrorOutlined';
-import QueryBuilderOutlinedIcon from '@mui/icons-material/QueryBuilderOutlined';
-import Checkbox from '@mui/material/Checkbox';
-import TooltipButton from '../../components/TooltipButton';
+import { Calendar } from 'lucide-react';
 import { calcDate } from '../../utlis/helpers';
 import TaskMenuButton from './components/TaskMenuButton';
-import { useEditTask } from './useEditTask';
-
-const label = { inputProps: { 'aria-label': 'Checkbox demo' } };
 
 export default function TaskItem({ task, index }) {
     const startDate = calcDate(task.startDate);
     const endDate = calcDate(task.endDate);
-    const { editTaskHandler } = useEditTask();
 
-    const handleDone = async () => {
-        const updatedTask = { ...task, status: task.status === 'done' ? 'todo' : 'done' };
-        await editTaskHandler(updatedTask);
-    };
+
 
     return (
         <Draggable draggableId={task.id.toString()} index={index}>
@@ -26,36 +17,29 @@ export default function TaskItem({ task, index }) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`flex flex-col gap-4 rounded-2xl shadow shadow-gray-300 p-3 cursor-grab transition-all duration-200 ${snapshot.isDragging ? 'bg-blue-100 shadow-lg scale-[1.02]' : 'bg-white'}`}
+                    className={`group bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer ${snapshot.isDragging ? 'bg-blue-100 shadow-lg scale-[1.02]' : 'bg-white'}`}
                 >
-                    <div className="flex justify-between items-center">
-                        <div className="flex gap-2 items-center">
-                            {task.priority === 'high' ? (
-                                <ErrorOutlinedIcon sx={{ color: '#FF0000' }} />
-                            ) : task.priority === 'medium' ? (
-                                <div className="w-4 h-4 border-2 rounded-full mt-1 border-orange-400 bg-orange-400"></div>
-                            ) : (
-                                <div className="w-4 h-4 border-2 rounded-full mt-1 border-green-400 bg-green-400"></div>
-                            )}
-                            <p className={`text-xl font-semibold ${task.status === 'done' ? 'line-through' : ''}`}>{task.title}</p>
-                        </div>
-                        <div className="flex items-center">
-                            <TooltipButton onClick={handleDone} title={task.status === 'done' ? 'Mark as todo' : 'Mark as done'}>
-                                <Checkbox {...label} checked={task.status === 'done'} />
-                            </TooltipButton>
+                    <div className='flex-1 min-w-0'>
+
+                        <div className="flex items-start justify-between gap-2 mb-2">
+                            <h4 className={`font-medium text-foreground line-clamp-2 ${task.status === 'done' ? 'line-through' : ''}`}>{task.title}</h4>
                             <TaskMenuButton task={task} />
                         </div>
-                    </div>
 
-                    <div className="flex gap-2 items-center text-gray-600">
-                        <span>{startDate}</span> - <span>{endDate}</span>
-                        <QueryBuilderOutlinedIcon sx={{ color: 'gray' }} />
-                    </div>
+                        <div className="text-sm text-muted-foreground line-clamp-2 mb-3">
+                            {task.discription}
+                        </div>
 
-                    <div className="flex gap-2">
-                        <span className="bg-gray-300 rounded-3xl px-5 py-1 hover:bg-gray-400 transition-all duration-300 cursor-default">
-                            {task.category}
-                        </span>
+                        <div className='flex items-center justify-between'>
+                            <div className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors ${task.priority === 'high' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' : task.priority === 'medium' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' : 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20'}`}>
+                                {task.priority}
+                            </div>
+                            <div className='flex items-center gap-1.5 text-xs text-muted-foreground'>
+                                <Calendar />
+                                {startDate} - {endDate}
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             )}

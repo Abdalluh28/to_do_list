@@ -42,7 +42,7 @@ export default function NavBar() {
                         </span>
                         <h1 className='text-2xl font-semibold tracking-widest'>AckiTask</h1>
                     </div>
-                    <div className='sm:block hidden '>
+                    <div className='flex-1 max-w-md mx-8 hidden md:block'>
                         <SearchBar />
                     </div>
                     <div className='flex items-center gap-2'>

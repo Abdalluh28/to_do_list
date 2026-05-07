@@ -1,63 +1,140 @@
-import MoreVertIcon from '@mui/icons-material/MoreVert';
-import IconButton from '@mui/material/IconButton';
 import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
 import { useState } from 'react';
+
 import Modal from '../../../components/Modal';
+
 import { useCreateTask } from '../useCreateTask';
+
 import CreateEditTaskForm from './CreateEditTaskForm';
 import DeleteModal from './DeleteModal';
 
-
-
-const ITEM_HEIGHT = 48;
+import {
+    Copy,
+    EllipsisVertical,
+    Pencil,
+    Trash2
+} from 'lucide-react';
 
 export default function TaskMenuButton({ task }) {
+
     const [anchorEl, setAnchorEl] = useState(null);
+
     const open = Boolean(anchorEl);
+
     const handleClick = (e) => setAnchorEl(e.currentTarget);
+
     const handleClose = () => setAnchorEl(null);
 
     const { addTaskHandler } = useCreateTask();
 
     const handleDuplicate = async () => {
+
         const newTask = {
             ...task,
             id: Date.now(),
             uniqueId: `${Date.now()}-${Math.random()}`
         };
+
         await addTaskHandler(newTask);
+
         handleClose();
     };
 
     return (
         <Modal>
-            <IconButton aria-label="more" onClick={handleClick}>
-                <MoreVertIcon />
-            </IconButton>
 
-            <Menu anchorEl={anchorEl} open={open} onClose={handleClose} slotProps={{ paper: { style: { maxHeight: ITEM_HEIGHT * 4.5, width: '20ch' } } }}>
-                <MenuItem onClick={handleClose}>
+            {/* Trigger Button */}
+            <button
+                className='inline-flex items-center justify-center rounded-lg duration-300 hover:bg-accent hover:text-accent-foreground text-sm w-8 h-8 p-0'
+                onClick={handleClick}
+                aria-label='more'
+            >
+                <EllipsisVertical className='w-4 h-4' />
+            </button>
+
+            {/* Menu */}
+            <Menu
+                anchorEl={anchorEl}
+                open={open}
+                onClose={handleClose}
+                anchorOrigin={{
+                    vertical: 'bottom',
+                    horizontal: 'right',
+                }}
+                transformOrigin={{
+                    vertical: 'top',
+                    horizontal: 'right',
+                }}
+                slotProps={{
+                    paper: {
+                        elevation: 0,
+                        sx: {
+                            overflow: 'visible',
+                            background: 'transparent',
+                            boxShadow: 'none',
+                        }
+                    }
+                }}
+            >
+
+                <div className="min-w-[180px] bg-popover border border-border rounded-xl shadow-lg p-1.5">
+
+                    {/* Edit */}
                     <Modal.Open opens="edit-task-form">
-                        <span className="w-full text-left">Edit</span>
+                        <button
+                            onClick={handleClose}
+                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-all duration-200 text-foreground hover:bg-accent"
+                        >
+                            <Pencil className='w-4 h-4' />
+
+                            <span className='text-sm'>
+                                Edit
+                            </span>
+                        </button>
                     </Modal.Open>
-                </MenuItem>
-                <MenuItem onClick={handleDuplicate}>Duplicate</MenuItem>
-                <MenuItem onClick={handleClose}>
+
+                    {/* Duplicate */}
+                    <button
+                        onClick={handleDuplicate}
+                        className="w-full flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-all duration-200 text-foreground hover:bg-accent"
+                    >
+                        <Copy className='w-4 h-4' />
+
+                        <span className='text-sm'>
+                            Duplicate
+                        </span>
+                    </button>
+
+                    <div className="h-px bg-border my-1.5" />
+
+                    {/* Delete */}
                     <Modal.Open opens="delete-task">
-                        <span className="w-full text-left">Delete</span>
+                        <button
+                            onClick={handleClose}
+                            className="w-full flex items-center gap-2 px-3 py-2 rounded-lg cursor-pointer outline-none transition-all duration-200 text-red-500 hover:bg-red-500/10"
+                        >
+                            <Trash2 className='w-4 h-4' />
+
+                            <span className='text-sm'>
+                                Delete
+                            </span>
+                        </button>
                     </Modal.Open>
-                </MenuItem>
+
+                </div>
+
             </Menu>
 
+            {/* Edit Modal */}
             <Modal.Window name="edit-task-form">
                 <CreateEditTaskForm taskToEdit={task} />
             </Modal.Window>
+
+            {/* Delete Modal */}
             <Modal.Window name="delete-task">
                 <DeleteModal taskId={task.id} />
             </Modal.Window>
+
         </Modal>
     );
 }
-
-

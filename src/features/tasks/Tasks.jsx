@@ -45,7 +45,6 @@ export default function Tasks() {
             case 'Z-A':
                 sortedTasks.sort((a, b) => b.title.localeCompare(a.title));
                 break;
-            case 'Sort By': // reset to original order
             default:
                 // keep tempTasks order (original order)
                 break;
@@ -88,7 +87,7 @@ export default function Tasks() {
 
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="flex sm:items-center lg:items-start justify-center gap-8 flex-col lg:flex-row pl-5">
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                 {['todo', 'in-progress', 'done'].map((status) => (
                     <TaskList
                         key={status}

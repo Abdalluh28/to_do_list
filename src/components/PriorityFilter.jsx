@@ -4,7 +4,7 @@ import { setPriority } from './FilterSlice';
 
 export default function PriorityFilter() {
     return (
-        <div>
+        <div className='flex items-center gap-2 flex-wrap'>
             <Button value="All">All</Button>
             <Button value="high">High</Button>
             <Button value="medium">Medium</Button>
@@ -23,8 +23,7 @@ function Button({ children, value }) {
 
 
     return (
-        <button className={`border border-blue-500 text-black hover:bg-blue-700 hover:text-white font-semibold tracking-widest py-2 px-4 rounded-lg cursor-pointer transition-all duration-300 mr-2 
-            ${priority === value ? 'bg-blue-500 text-white' : 'bg-white'}`}
+        <button className={`px-3 md:px-4 py-2 rounded-lg text-sm md:text-base transition-all duration-300 ${priority === value ? 'bg-primary text-primary-foreground shadow-sm' : 'bg-muted/50 text-foreground hover:bg-muted'}`}
             onClick={handleClick}>
             {children}
         </button>

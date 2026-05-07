@@ -1,33 +1,25 @@
-import { Tooltip, tooltipClasses } from '@mui/material';
-import AddCircleOutlineOutlinedIcon from '@mui/icons-material/AddCircleOutlineOutlined';
-import Modal from './Modal';
+import { Plus } from 'lucide-react';
 import CreateEditTaskForm from '../features/tasks/components/CreateEditTaskForm';
+import Modal from './Modal';
 
 export default function AddTaskButton() {
 
     return (
         <Modal>
-            <Tooltip
-                title="Add Task"
-                placement="top"
-                slotProps={{
-                    popper: {
-                        sx: {
-                            [`& .${tooltipClasses.tooltip}`]: {
-                                fontSize: '0.9rem',
-                                padding: '6px 10px',
-                            },
-                        },
-                    },
-                }}
-            >
-                <div className='fixed bottom-7 right-7 flex justify-center items-center w-20 h-20 bg-gray-200 hover:bg-gray-300 transition-all duration-300 cursor-pointer rounded-full z-50'
-                >
+            <div className='flex items-center justify-between flex-wrap gap-4'>
+                <div className=''>
+                    <h1 className='text-2xl md:text-3xl mb-2'>My Tasks</h1>
+                    <p className='text-sm md:text-base text-muted-foreground'>Mangae your tasks efficiently</p>
+                </div>
+                <div className='inline-flex items-center justify-center gap-2 rounded-lg transition-all duration-300 cursor-pointer hover:shadow-lg bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm h-10 px-4 shrink-0'>
                     <Modal.Open opens="Add-Task">
-                        <AddCircleOutlineOutlinedIcon sx={{ fontSize: '2.5rem' }} />
+                        <button className='flex gap-2 items-center cursor-pointer'>
+                            <Plus className='w-4 h-4' />
+                            <p className='text-sm hidden md:block'>Add Task</p>
+                        </button>
                     </Modal.Open>
                 </div>
-            </Tooltip>
+            </div>
             <Modal.Window name="Add-Task">
                 <CreateEditTaskForm />
             </Modal.Window>
