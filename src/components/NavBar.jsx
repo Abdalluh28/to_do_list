@@ -40,7 +40,7 @@ export default function NavBar() {
                         <span className='w-8 h-8 rounded-lg bg-linear-to-br from-indigo-500 to-purple-600 flex items-center justify-center'>
                             <SquareCheckBig className='text-white w-5 h-5' />
                         </span>
-                        <h1 className='text-2xl font-semibold tracking-widest'>AckiTask</h1>
+                        <h1 className='text-2xl font-semibold tracking-widest'>TaskFlow</h1>
                     </div>
                     <div className='flex-1 max-w-md mx-8 hidden md:block'>
                         <SearchBar />

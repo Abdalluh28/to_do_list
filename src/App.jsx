@@ -5,6 +5,7 @@ import Login from './features/auth/Login'
 import Register from './features/auth/Register'
 import { useSelector } from 'react-redux'
 import { useEffect } from 'react'
+import AuthLayout from './features/auth/AuthLayout'
 
 export default function App() {
     const theme = useSelector(state => state.theme);
@@ -23,12 +24,17 @@ export default function App() {
             element: <Home />,
         },
         {
-            path: '/login',
-            element: <Login />
-        },
-        {
-            path: '/register',
-            element: <Register />
+            element: <AuthLayout />,
+            children: [
+                {
+                    path: '/login',
+                    element: <Login />,
+                },
+                {
+                    path: '/register',
+                    element: <Register />,
+                },
+            ]
         }
     ])
 
