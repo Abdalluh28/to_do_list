@@ -12,12 +12,12 @@ export default function TaskItem({ task, index }) {
 
     return (
         <Draggable draggableId={task.id.toString()} index={index}>
-            {(provided, snapshot) => (
+            {(provided) => (
                 <div
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`group bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer ${snapshot.isDragging ? 'bg-blue-100 shadow-lg scale-[1.02]' : 'bg-white'}`}
+                    className="group bg-card border border-border rounded-xl p-4 shadow-sm hover:shadow-md hover:border-primary/20 transition-all duration-200 cursor-pointer "
                 >
                     <div className='flex-1 min-w-0'>
 
