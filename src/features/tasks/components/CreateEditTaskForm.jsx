@@ -30,7 +30,6 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
             priority: data.priority.toLowerCase(),
             startDate: data.startDate.format('YYYY-MM-DD'),
             endDate: data.endDate.format('YYYY-MM-DD'),
-            status: 'todo',
             id: isEdit ? taskToEdit.id : Date.now(),
             uniqueId: isEdit ? taskToEdit.uniqueId : `${Date.now()}-${Math.random()}`,
         };
@@ -62,7 +61,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
                         <input type="text" id="title"
                             className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
                             placeholder='Enter task title...' {...register('title', { required: true })}
-                            defaultValue={taskToEdit?.title || ''} />
+                             />
                     </div>
                     {errors.title && <span className="ml-2 text-red-600">This field is required</span>}
                 </div>
@@ -73,7 +72,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
                     <textarea
                         className='w-full min-h-[100px] px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all resize-none'
                         placeholder='Enter task description...'
-                        {...register('description', { required: true })} defaultValue={taskToEdit?.description || ''} />
+                        {...register('description', { required: true })}  />
                     {errors.description && <span className="ml-2 text-red-600">This field is required</span>}
                 </div>
 
@@ -83,8 +82,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
                         <label className='block mb-2 text-foreground/90'>Priority</label>
                         <select
                             className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all'
-                            {...register('priority', { required: true })}
-                            defaultValue={taskToEdit?.priority || 'low'}>
+                            {...register('priority', { required: true })}>
                             <option value="low">Low</option>
                             <option value="medium">Medium</option>
                             <option value="high">High</option>
@@ -95,8 +93,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
                         <label className='block mb-2 text-foreground/90'>Status</label>
                         <select
                             className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all'
-                            {...register('status', { required: true })}
-                            defaultValue={taskToEdit?.status || 'todo'}>
+                            {...register('status', { required: true })}>
                             <option value="todo">To Do</option>
                             <option value="in-progress">In Progress</option>
                             <option value="done">Done</option>
