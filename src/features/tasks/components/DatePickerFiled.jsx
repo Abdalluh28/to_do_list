@@ -10,7 +10,7 @@ export default function DatePickerField({ name, control, startDate, endDate, lab
       control={control}
       rules={{ required: true }}
       render={({ field, fieldState }) => (
-        <div className="flex flex-col">
+        <div className="flex flex-col gap-1">
           <span>{label}</span>
           <DayPicker
             date={field.value ?? dayjs()}

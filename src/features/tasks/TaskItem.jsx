@@ -27,7 +27,7 @@ export default function TaskItem({ task, index }) {
                         </div>
 
                         <div className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                            {task.discription}
+                            {task.description}
                         </div>
 
                         <div className='flex items-center justify-between'>

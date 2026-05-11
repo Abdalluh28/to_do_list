@@ -1,11 +1,9 @@
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
 import dayjs from 'dayjs';
-import { Controller, useForm } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { useCreateTask } from '../useCreateTask';
 import { useEditTask } from '../useEditTask';
 import DatePickerField from './DatePickerFiled';
-import SelectButton from './SelectButton';
+import { X } from 'lucide-react';
 
 
 export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) {
@@ -50,59 +48,87 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
     const onError = (errors) => console.log(errors);
 
     return (
-        <form onSubmit={handleSubmit(onSubmit, onError)} className="bg-white flex flex-col gap-4 rounded-2xl shadow shadow-gray-300 p-5 m-5">
-            <p className="self-center text-xl">{isEdit ? 'Edit Task' : 'Add New Task'}</p>
-
-            {/* Title */}
-            <div className="flex flex-col items-start">
-                <Box sx={{ '& > :not(style)': { m: 1, width: '30ch' } }}>
-                    <TextField id="title" label="Task title" variant="outlined" {...register('title', { required: true })} />
-                </Box>
-                {errors.title && <span className="ml-2 text-red-600">This field is required</span>}
+        <div className='fixed left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-50 w-full max-w-lg bg-card border border-border rounded-2xl shadow-2xl p-6 focus:outline-none'>
+            <div className='mb-6'>
+                <p className="text-xl mb-2 text-foreground">{isEdit ? 'Edit Task' : 'Create New Task'}</p>
+                <p className='text-muted-foreground'>{isEdit ? 'Make changes to your task' : 'Add a new task to your board'}</p>
             </div>
+            <form onSubmit={handleSubmit(onSubmit, onError)} className="space-y-4">
 
-            {/* Priority & Category */}
-            <div className="flex gap-4 md:items-center flex-col md:flex-row">
-                <div>
-                    <Controller
-                        name="priority"
-                        control={control}
-                        rules={{ required: true }}
-                        render={({ field }) => (
-                            <Box sx={{ '& > :not(style)': { m: 1, width: '30ch' } }}>
-                                <SelectButton value={field.value || ''} onChange={field.onChange} />
-                            </Box>
-                        )}
-                    />
-                    {errors.priority && <span className="ml-2 text-red-600">This field is required</span>}
+                {/* Title */}
+                <div className='w-full'>
+                    <label htmlFor="title" className='block mb-2 text-foreground/90'>Task title</label>
+                    <div className='relative'>
+                        <input type="text" id="title"
+                            className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed'
+                            placeholder='Enter task title...' {...register('title', { required: true })}
+                            defaultValue={taskToEdit?.title || ''} />
+                    </div>
+                    {errors.title && <span className="ml-2 text-red-600">This field is required</span>}
                 </div>
-                <div>
-                    <Box sx={{ '& > :not(style)': { m: 1, width: '30ch' } }}>
-                        <TextField id="category" label="Category" variant="outlined" {...register('category', { required: true })} />
-                    </Box>
-                    {errors.category && <span className="ml-2 text-red-600">This field is required</span>}
-                </div>
-            </div>
 
-            {/* Start & End Dates */}
-            <div className="flex gap-4 flex-col md:flex-row">
-                <div className="md:w-1/2 w-full">
+                {/* description */}
+                <div>
+                    <label className='block mb-2 text-foreground/90'>Description</label>
+                    <textarea
+                        className='w-full min-h-[100px] px-4 py-3 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all resize-none'
+                        placeholder='Enter task description...'
+                        {...register('description', { required: true })} defaultValue={taskToEdit?.description || ''} />
+                    {errors.description && <span className="ml-2 text-red-600">This field is required</span>}
+                </div>
+
+                {/* Priority & Status */}
+                <div className='grid grid-cols-1 sm:grid-cols-2 gap-4'>
+                    <div>
+                        <label className='block mb-2 text-foreground/90'>Priority</label>
+                        <select
+                            className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all'
+                            {...register('priority', { required: true })}
+                            defaultValue={taskToEdit?.priority || 'low'}>
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                        {errors.priority && <span className="ml-2 text-red-600">This field is required</span>}
+                    </div>
+                    <div>
+                        <label className='block mb-2 text-foreground/90'>Status</label>
+                        <select
+                            className='w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all'
+                            {...register('status', { required: true })}
+                            defaultValue={taskToEdit?.status || 'todo'}>
+                            <option value="todo">To Do</option>
+                            <option value="in-progress">In Progress</option>
+                            <option value="done">Done</option>
+                        </select>
+                        {errors.status && <span className="ml-2 text-red-600">This field is required</span>}
+                    </div>
+                </div>
+
+                {/* Start & End Dates */}
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <DatePickerField name="startDate" control={control} endDate={endDate} label="Start Date" />
-                </div>
-                <div className="md:w-1/2 w-full">
                     <DatePickerField name="endDate" control={control} startDate={startDate} label="End Date" />
                 </div>
-            </div>
 
-            {/* Buttons */}
-            <div className="flex gap-4 justify-end mt-3">
-                <button type="button" onClick={onClose} className="bg-gray-500 hover:bg-gray-600 transition-all duration-300 p-2 rounded-full w-[100px] text-white text-lg cursor-pointer">
-                    Cancel
-                </button>
-                <button type="submit" className="bg-red-500 hover:bg-red-600 transition-all duration-300 p-2 rounded-full w-[100px] text-white text-lg cursor-pointer">
-                    {isEdit ? 'Update' : 'Add'}
-                </button>
-            </div>
-        </form>
+                {/* Buttons */}
+                <div className="flex justify-end gap-3 pt-4">
+                    <button type="button"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed hover:bg-accent hover:text-accent-foreground h-10 px-4"
+                        onClick={onClose} >
+                        Cancel
+                    </button>
+                    <button type="submit"
+                        className="inline-flex items-center justify-center gap-2 rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed bg-primary text-primary-foreground hover:bg-primary/90 shadow-sm h-10 px-4">
+                        {isEdit ? 'Update' : 'Create Task'}
+                    </button>
+                </div>
+            </form>
+            <button
+                className='absolute right-4 top-4 p-2 rounded-lg hover:bg-accent transition-colors'
+                onClick={onClose}>
+                <X className='w-4 h-4' />
+            </button>
+        </div>
     );
 }

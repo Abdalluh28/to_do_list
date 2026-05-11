@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Box from '@mui/material/Box';
-import IconButton from '@mui/material/IconButton';
 import Modal from '@mui/material/Modal';
-import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { LocalizationProvider, StaticDatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { Calendar } from 'lucide-react';
 
 export default function DayPicker({ date, setDate, startDate, endDate }) {
     const [open, setOpen] = useState(false);
@@ -31,16 +30,18 @@ export default function DayPicker({ date, setDate, startDate, endDate }) {
     };
 
     return (
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
             <input
                 type="text"
                 value={date.format('DD MMM YYYY')}
                 readOnly
-                className="border rounded p-1 w-2/3"
+                className="w-full h-11 px-4 rounded-lg border-2 border-border bg-background text-foreground placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring/20 focus:border-primary transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
             />
-            <IconButton onClick={handleOpen}>
-                <CalendarTodayIcon />
-            </IconButton>
+            <div
+                className='hover:bg-accent hover:text-accent-foreground p-2 rounded-full transition duration-300 cursor-pointer'
+                onClick={handleOpen}>
+                <Calendar />
+            </div>
 
             <Modal
                 open={open}
@@ -49,14 +50,19 @@ export default function DayPicker({ date, setDate, startDate, endDate }) {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    '& .MuiBackdrop-root': {
+                        backgroundColor: 'rgba(0, 0, 0, 0.55)',
+                    },
                 }}
             >
                 <Box
                     sx={{
-                        bgcolor: 'background.paper',
+                        bgcolor: 'var(--popover)',
+                        color: 'var(--popover-foreground)',
                         boxShadow: 24,
-                        p: 4,
+                        p: 2,
                         borderRadius: 2,
+                        border: '1px solid var(--border)',
                         minWidth: 300,
                     }}
                 >
@@ -73,6 +79,95 @@ export default function DayPicker({ date, setDate, startDate, endDate }) {
                             slotProps={{
                                 actionBar: {
                                     actions: ['today'],
+                                    sx: {
+                                        '& .MuiButton-root': {
+                                            color: 'var(--primary)',
+                                            borderRadius: 'var(--radius)',
+                                            '&:hover': {
+                                                backgroundColor: 'var(--accent)',
+                                            },
+                                        },
+                                    },
+                                },
+                            }}
+                            sx={{
+                                bgcolor: 'var(--popover)',
+                                color: 'var(--popover-foreground)',
+                                borderRadius: 2,
+                                overflow: 'hidden',
+                                '& .MuiPickersLayout-root': {
+                                    bgcolor: 'var(--popover)',
+                                    color: 'var(--popover-foreground)',
+                                },
+                                '& .MuiPickersToolbar-root': {
+                                    bgcolor: 'var(--popover)',
+                                    color: 'var(--popover-foreground)',
+                                    borderBottom: '1px solid var(--border)',
+                                },
+                                '& .MuiPickersToolbar-content, & .MuiPickersToolbarText-root': {
+                                    color: 'var(--popover-foreground)',
+                                },
+                                '& .MuiDateCalendar-root': {
+                                    bgcolor: 'var(--popover)',
+                                    color: 'var(--popover-foreground)',
+                                },
+                                '& .MuiPickersCalendarHeader-root': {
+                                    color: 'var(--popover-foreground)',
+                                },
+                                '& .MuiPickersCalendarHeader-label': {
+                                    color: 'var(--popover-foreground)',
+                                },
+                                '& .MuiPickersArrowSwitcher-button': {
+                                    color: 'var(--popover-foreground)',
+                                    '&:hover': {
+                                        bgcolor: 'var(--accent)',
+                                    },
+                                    '&.Mui-disabled': {
+                                        color: 'var(--muted-foreground)',
+                                        opacity: 0.45,
+                                    },
+                                },
+                                '& .MuiDayCalendar-weekDayLabel': {
+                                    color: 'var(--muted-foreground)',
+                                },
+                                '& .MuiPickersDay-root': {
+                                    color: 'var(--popover-foreground)',
+                                    borderRadius: 'var(--radius)',
+                                    '&:hover': {
+                                        bgcolor: 'var(--accent)',
+                                    },
+                                    '&.Mui-selected': {
+                                        bgcolor: 'var(--primary)',
+                                        color: 'var(--primary-foreground)',
+                                        '&:hover, &:focus': {
+                                            bgcolor: 'var(--primary)',
+                                        },
+                                    },
+                                    '&.MuiPickersDay-today': {
+                                        borderColor: 'var(--primary)',
+                                    },
+                                    '&.Mui-disabled': {
+                                        color: 'var(--muted-foreground)',
+                                        opacity: 0.45,
+                                    },
+                                },
+                                '& .MuiPickersYear-yearButton, & .MuiPickersMonth-monthButton': {
+                                    color: 'var(--popover-foreground)',
+                                    borderRadius: 'var(--radius)',
+                                    '&:hover': {
+                                        bgcolor: 'var(--accent)',
+                                    },
+                                    '&.Mui-selected': {
+                                        bgcolor: 'var(--primary)',
+                                        color: 'var(--primary-foreground)',
+                                        '&:hover, &:focus': {
+                                            bgcolor: 'var(--primary)',
+                                        },
+                                    },
+                                    '&.Mui-disabled': {
+                                        color: 'var(--muted-foreground)',
+                                        opacity: 0.45,
+                                    },
                                 },
                             }}
                         />
