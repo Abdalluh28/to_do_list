@@ -31,7 +31,7 @@ export default function TaskItem({ task, index }) {
                         </div>
 
                         <div className='flex items-center justify-between'>
-                            <div className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors ${task.priority === 'high' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' : task.priority === 'medium' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' : 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20'}`}>
+                            <div className={`inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-medium transition-colors ${task.priority === 'high' ? 'bg-red-500/10 text-red-600 dark:text-red-400 border-red-500/20' : task.priority === 'medium' ? 'bg-orange-500/10 text-orange-600 dark:text-orange-400 border-orange-500/20' : 'bg-green-500/10 text-green-600 dark:text-green-400 border-green-500/20'}`}>
                                 {task.priority}
                             </div>
                             <div className='flex items-center gap-1.5 text-xs text-muted-foreground'>

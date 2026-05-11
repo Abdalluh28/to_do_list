@@ -1,6 +1,6 @@
-import React from 'react'
-import { Droppable } from '@hello-pangea/dnd'
-import TaskItem from './TaskItem'
+import { Droppable } from '@hello-pangea/dnd';
+import { CircleCheck, ListTodo, LoaderCircle } from 'lucide-react';
+import TaskItem from './TaskItem';
 
 export default function TaskList({ list, tasks }) {
 
@@ -36,14 +36,38 @@ export default function TaskList({ list, tasks }) {
                                 <TaskItem key={task.id} task={task} index={index} />
                             ))
                             : (
-                                <div className='flex justify-center items-center h-full'>
+                                <>
                                     {list === 'todo' ?
-                                        <p className='text-lg'>All clear! No tasks to tackle… for now.</p> :
+                                        (
+                                            <div className='flex flex-col items-center justify-center py-12 px-4'>
+                                                <div className='w-12 h-12 rounded-full bg-yellow-500/10 flex items-center justify-center mb-3'>
+                                                    <ListTodo className='w-6 h-6 text-yellow-600 dark:text-yellow-400' />
+                                                </div>
+                                                <h4 className='text-sm font-medium mb-1 text-foreground'>No tasks to do</h4>
+                                                <p className='text-xs text-muted-foreground text-center max-w-[200px]'>Create a new task or drag tasks here to get started</p>
+                                            </div>
+                                        ) :
                                         list === 'in-progress' ?
-                                            <p className='text-lg'>Nothing being worked on… yet. Let’s start a task!</p> :
-                                            <p className='text-lg'>No completed tasks yet. Keep going—you’ll get there!</p>
+                                            (
+                                                <div className='flex flex-col items-center justify-center py-12 px-4'>
+                                                    <div className='w-12 h-12 rounded-full bg-purple-500/10 flex items-center justify-center mb-3'>
+                                                        <LoaderCircle className='w-6 h-6 text-purple-600 dark:text-purple-400' />
+                                                    </div>
+                                                    <h4 className='text-sm font-medium mb-1 text-foreground'>Nothing in progress</h4>
+                                                    <p className='text-xs text-muted-foreground text-center max-w-[200px]'>Drag tasks here when you start working on them</p>
+                                                </div>
+                                            ) :
+                                            (
+                                                <div className='flex flex-col items-center justify-center py-12 px-4'>
+                                                    <div className='w-12 h-12 rounded-full bg-green-500/10 flex items-center justify-center mb-3'>
+                                                        <CircleCheck className='w-6 h-6 text-green-600 dark:text-green-400' />
+                                                    </div>
+                                                    <h4 className='text-sm font-medium mb-1 text-foreground'>No completed tasks</h4>
+                                                    <p className='text-xs text-muted-foreground text-center max-w-[200px]'>Completed tasks will appear here</p>
+                                                </div>
+                                            )
                                     }
-                                </div>
+                                </>
                             )
                         }
                         {provided.placeholder}

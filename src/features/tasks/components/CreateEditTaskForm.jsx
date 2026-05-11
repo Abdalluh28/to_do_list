@@ -12,7 +12,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
     const defaultValues = {
         title: taskToEdit?.title || '',
         priority: taskToEdit?.priority || 'low',
-        category: taskToEdit?.category || '',
+        description: taskToEdit?.description || '',
         startDate: taskToEdit?.startDate ? dayjs(taskToEdit.startDate) : dayjs(),
         endDate: taskToEdit?.endDate ? dayjs(taskToEdit.endDate) : dayjs(),
     };

@@ -4,6 +4,7 @@ import TaskList from './TaskList';
 import { setTasks } from './tasksSlice';
 import { useMemo } from 'react';
 import { editTask } from '../../services/apiTasks';
+import EmptyLists from './EmptyLists';
 
 
 export default function Tasks() {
@@ -85,17 +86,24 @@ export default function Tasks() {
         await editTask(movedTask);
     };
 
+
     return (
         <DragDropContext onDragEnd={handleDragEnd}>
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                {['todo', 'in-progress', 'done'].map((status) => (
-                    <TaskList
-                        key={status}
-                        list={status}
-                        tasks={filteredTasks.filter((t) => t.status === status)}
-                    />
-                ))}
-            </div>
-        </DragDropContext>
+            {filteredTasks.length === 0 ? (
+                <EmptyLists />
+            ) : (
+                <>
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        {['todo', 'in-progress', 'done'].map((status) => (
+                            <TaskList
+                                key={status}
+                                list={status}
+                                tasks={filteredTasks.filter((t) => t.status === status)}
+                            />
+                        ))}
+                    </div>
+                </>
+            )}
+        </DragDropContext >
     );
 }

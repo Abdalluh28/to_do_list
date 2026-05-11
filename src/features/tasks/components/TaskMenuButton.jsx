@@ -132,7 +132,7 @@ export default function TaskMenuButton({ task }) {
 
             {/* Delete Modal */}
             <Modal.Window name="delete-task">
-                <DeleteModal taskId={task.id} />
+                <DeleteModal taskId={task.id} title={task.title} />
             </Modal.Window>
 
         </Modal>
