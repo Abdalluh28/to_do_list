@@ -15,7 +15,10 @@ export const useDeleteTask = () => {
 
         if (user && taskToRestore) {
             try {
-                const res = await deleteTaskApi(taskToRestore.uniqueId);
+                const res = await deleteTaskApi(
+                    taskToRestore.uniqueId,
+                    user.id
+                );
                 if (res.error) throw new Error(res.error);
             } catch (err) {
                 console.log(err)

@@ -83,7 +83,10 @@ export default function Tasks() {
 
 
         dispatch(setTasks(updatedTasks));
-        await editTask(movedTask);
+        const user = JSON.parse(localStorage.getItem("user"));
+        if (user?.id) {
+            await editTask({ ...movedTask, userId: user.id });
+        }
     };
 
 

@@ -4,8 +4,10 @@ import { toast } from "react-toastify";
 import { addTask } from "../../services/apiTasks";
 import { useDispatch } from "react-redux";
 import { setTasks } from "../tasks/tasksSlice";
-
-const createTaskId = () => crypto.randomUUID?.() || `${Date.now()}-${Math.random()}`;
+import {
+    ensureTaskUniqueId,
+    filterLocalTasksForUser,
+} from "../../utils/taskIds";
 
 export const useRegister = ({ reset }) => {
     const [registerApi, { isLoading }] = useRegisterMutation();
@@ -30,21 +32,25 @@ export const useRegister = ({ reset }) => {
             toast.success("User registered successfully");
             localStorage.setItem("user", JSON.stringify(res.data.user));
 
-            const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
+            const localTasksRaw =
+                JSON.parse(localStorage.getItem("tasks")) || [];
+            const localTasks = filterLocalTasksForUser(
+                localTasksRaw,
+                res.data.user.id,
+            );
             const updatedLocalTasks = localTasks.map((task, index) => ({
                 ...task,
                 userId: res.data.user.id,
-                id: Date.now() + index,
-                uniqueId: createTaskId()
+                id: task.id ?? Date.now() + index,
+                uniqueId: ensureTaskUniqueId(task),
             }));
 
-            await Promise.all(updatedLocalTasks.map(task => addTask(task)));
+            await Promise.all(updatedLocalTasks.map((task) => addTask(task)));
             localStorage.setItem("tasks", JSON.stringify(updatedLocalTasks));
             dispatch(setTasks(updatedLocalTasks));
 
             navigate("/");
             reset();
-
         } catch (err) {
             console.error(err);
             toast.error("Registration failed. Please try again.");
@@ -52,4 +58,4 @@ export const useRegister = ({ reset }) => {
     };
 
     return { registerHandler, isLoading };
-}
+};

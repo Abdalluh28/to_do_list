@@ -14,6 +14,7 @@ import {
     Pencil,
     Trash2
 } from 'lucide-react';
+import { newClientUniqueId } from '../../../utils/taskIds';
 
 export default function TaskMenuButton({ task }) {
 
@@ -32,7 +33,7 @@ export default function TaskMenuButton({ task }) {
         const newTask = {
             ...task,
             id: Date.now(),
-            uniqueId: `${Date.now()}-${Math.random()}`
+            uniqueId: newClientUniqueId(),
         };
 
         await addTaskHandler(newTask);

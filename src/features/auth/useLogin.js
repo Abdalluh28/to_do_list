@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { addTask, getTasks, editTask } from "../../services/apiTasks";
 import { useDispatch } from "react-redux";
 import { setTasks } from "../tasks/tasksSlice";
+import { ensureTaskUniqueId, filterLocalTasksForUser } from "../../utils/taskIds";
 
 export const useLogin = ({ reset }) => {
     const [loginApi, { isLoading }] = useLoginMutation();
@@ -19,7 +20,6 @@ export const useLogin = ({ reset }) => {
             });
 
             if (res.error) {
-                toast.error(res.error.data || "Login failed");
                 throw new Error(res.error.data || "Login failed");
             }
 
@@ -30,12 +30,13 @@ export const useLogin = ({ reset }) => {
             // 2️⃣ Fetch tasks from Supabase
             const dbTasks = await getTasks(user.id);
 
-            // 3️⃣ Get local tasks from localStorage
-            const localTasks = JSON.parse(localStorage.getItem("tasks")) || [];
-            const updatedLocalTasks = localTasks.map(task => ({
+            // 3️⃣ Local tasks: only this user or guest (never another account's cache)
+            const localTasksRaw = JSON.parse(localStorage.getItem("tasks")) || [];
+            const localTasks = filterLocalTasksForUser(localTasksRaw, user.id);
+            const updatedLocalTasks = localTasks.map((task) => ({
                 ...task,
                 userId: user.id,
-                uniqueId: task.uniqueId || `${Date.now()}-${Math.random()}`
+                uniqueId: ensureTaskUniqueId(task),
             }));
 
             // 4️⃣ Merge tasks (prefer local edits)

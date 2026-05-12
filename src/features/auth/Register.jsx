@@ -16,6 +16,7 @@ export default function Register() {
         handleSubmit,
         formState: { errors },
         reset,
+        watch
     } = useForm();
 
     const { registerHandler, isLoading } = useRegister({ reset });
@@ -67,6 +68,15 @@ export default function Register() {
                         },
                     })}
                     error={errors.password?.message}
+                />
+
+                <PasswordInput
+                    label='Confirm Password'
+                    register={register('confirmPassword', {
+                        required: 'Confirm Password is required',
+                        validate: (value) => value === watch('password') || 'Passwords do not match',
+                    })}
+                    error={errors.confirmPassword?.message}
                 />
 
                 <button

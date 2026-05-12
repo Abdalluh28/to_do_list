@@ -26,13 +26,21 @@ export async function getTasks(userId) {
  * @param {string} taskUniqueId
  * @returns {Object|null} task
  */
-export async function getTask(taskUniqueId) {
+function scopeTaskQueryByUserId(query, userId) {
+    if (userId == null) {
+        return query.is('userId', null);
+    }
+    return query.eq('userId', userId);
+}
+
+export async function getTask(taskUniqueId, userId) {
     try {
-        const { data: task, error } = await supabase
+        let q = supabase
             .from('Tasks')
             .select('*')
-            .eq('uniqueId', taskUniqueId)
-            .single();
+            .eq('uniqueId', taskUniqueId);
+        q = scopeTaskQueryByUserId(q, userId);
+        const { data: task, error } = await q.single();
 
         if (error) throw error;
 
@@ -48,14 +56,14 @@ export async function getTask(taskUniqueId) {
  * @param {string} taskUniqueId
  * @returns {Object|null} deleted task
  */
-export async function deleteTask(taskUniqueId) {
+export async function deleteTask(taskUniqueId, userId) {
     try {
-        const { data, error } = await supabase
+        let q = supabase
             .from('Tasks')
             .delete()
-            .eq('uniqueId', taskUniqueId)
-            .select()
-            .single();
+            .eq('uniqueId', taskUniqueId);
+        q = scopeTaskQueryByUserId(q, userId);
+        const { data, error } = await q.select().single();
 
         if (error) throw error;
 
@@ -95,12 +103,12 @@ export async function addTask(task) {
  */
 export async function editTask(task) {
     try {
-        const { data, error } = await supabase
+        let q = supabase
             .from('Tasks')
             .update(task)
-            .eq('uniqueId', task.uniqueId)
-            .select()
-            .single(); // return the updated row
+            .eq('uniqueId', task.uniqueId);
+        q = scopeTaskQueryByUserId(q, task.userId);
+        const { data, error } = await q.select().single(); // return the updated row
 
         if (error) throw error;
 

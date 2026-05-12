@@ -2,6 +2,7 @@ import { useDispatch } from "react-redux"
 import { addTask as addTaskRedux, deleteTask } from "./tasksSlice";
 import { addTask as addTaskApi } from "../../services/apiTasks";
 import { toast } from "react-toastify";
+import { ensureTaskUniqueId } from "../../utils/taskIds";
 
 export const useCreateTask = () => {
     const dispatch = useDispatch();
@@ -11,7 +12,7 @@ export const useCreateTask = () => {
         const newTask = {
             ...task,
             userId: user?.id || null,
-            uniqueId: task.uniqueId || `${Date.now()}-${Math.random()}`
+            uniqueId: ensureTaskUniqueId(task),
         };
 
         dispatch(addTaskRedux(newTask));

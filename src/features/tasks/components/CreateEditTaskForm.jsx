@@ -4,6 +4,7 @@ import { useCreateTask } from '../useCreateTask';
 import { useEditTask } from '../useEditTask';
 import DatePickerField from './DatePickerFiled';
 import { X } from 'lucide-react';
+import { newClientUniqueId } from '../../../utils/taskIds';
 
 
 export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) {
@@ -31,7 +32,7 @@ export default function CreateEditTaskForm({ taskToEdit, onClose = () => { } }) 
             startDate: data.startDate.format('YYYY-MM-DD'),
             endDate: data.endDate.format('YYYY-MM-DD'),
             id: isEdit ? taskToEdit.id : Date.now(),
-            uniqueId: isEdit ? taskToEdit.uniqueId : `${Date.now()}-${Math.random()}`,
+            uniqueId: isEdit ? taskToEdit.uniqueId : newClientUniqueId(),
         };
 
         if (isEdit) {
