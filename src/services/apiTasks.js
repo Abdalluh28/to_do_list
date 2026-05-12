@@ -8,9 +8,9 @@ import supabase from "./supabase";
 export async function getTasks(userId) {
     try {
         const { data: tasks, error } = await supabase
-            .from('Tasks')
-            .select('*')
-            .eq('userId', userId);
+            .from("Tasks")
+            .select("*")
+            .eq("userId", userId);
 
         if (error) throw error;
 
@@ -28,17 +28,14 @@ export async function getTasks(userId) {
  */
 function scopeTaskQueryByUserId(query, userId) {
     if (userId == null) {
-        return query.is('userId', null);
+        return query.is("userId", null);
     }
-    return query.eq('userId', userId);
+    return query.eq("userId", userId);
 }
 
 export async function getTask(taskUniqueId, userId) {
     try {
-        let q = supabase
-            .from('Tasks')
-            .select('*')
-            .eq('uniqueId', taskUniqueId);
+        let q = supabase.from("Tasks").select("*").eq("uniqueId", taskUniqueId);
         q = scopeTaskQueryByUserId(q, userId);
         const { data: task, error } = await q.single();
 
@@ -58,10 +55,7 @@ export async function getTask(taskUniqueId, userId) {
  */
 export async function deleteTask(taskUniqueId, userId) {
     try {
-        let q = supabase
-            .from('Tasks')
-            .delete()
-            .eq('uniqueId', taskUniqueId);
+        let q = supabase.from("Tasks").delete().eq("uniqueId", taskUniqueId);
         q = scopeTaskQueryByUserId(q, userId);
         const { data, error } = await q.select().single();
 
@@ -82,7 +76,7 @@ export async function deleteTask(taskUniqueId, userId) {
 export async function addTask(task) {
     try {
         const { data, error } = await supabase
-            .from('Tasks')
+            .from("Tasks")
             .insert(task)
             .select()
             .single(); // return the inserted row
@@ -102,13 +96,14 @@ export async function addTask(task) {
  * @returns {Object|null} updated task
  */
 export async function editTask(task) {
+    console.log(task.uniqueId)
     try {
         let q = supabase
-            .from('Tasks')
+            .from("Tasks")
             .update(task)
-            .eq('uniqueId', task.uniqueId);
-        q = scopeTaskQueryByUserId(q, task.userId);
-        const { data, error } = await q.select().single(); // return the updated row
+            .eq("uniqueId", task.uniqueId);
+
+        const { data, error } = await q.select().maybeSingle();
 
         if (error) throw error;
 
