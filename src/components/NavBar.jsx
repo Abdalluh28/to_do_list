@@ -6,16 +6,21 @@ import { toast } from 'react-toastify';
 import ProfileMenu from './ProfileMenu';
 import { LogIn, SquareCheckBig } from 'lucide-react';
 import ThemeIcon from '../ui/ThemeIcon';
+import { useDispatch } from 'react-redux';
+import { clearTasks } from '../features/tasks/tasksSlice';
 
 export default function NavBar() {
 
     const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user')));
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
 
     const handleLogout = () => {
         localStorage.removeItem('user');
         setUser(null);
+        localStorage.removeItem('tasks');
+        dispatch(clearTasks());
         toast.success('User logged out successfully');
     }
 
